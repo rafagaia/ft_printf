@@ -6,11 +6,17 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/17 01:36:40 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/17 19:57:44 by rafaelgai        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+int		format_handler(void)
+{
+
+	return (0);
+}
 
 int		ft_printf(char *fmt, ...)
 {
@@ -23,7 +29,7 @@ int		ft_printf(char *fmt, ...)
 	{
 		printf("While *fmt: %c\n", *fmt);
 		if (*fmt == '%')
-			//len += format_handler();
+			len += format_handler();
 		else
 		{
 			len += write(1, fmt, 1);

@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:08:52 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/17 01:33:53 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/17 19:59:59 by rafaelgai        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,4 +14,9 @@
 #include <stdarg.h>
 #include <stdio.h> //DELETE
 
+/*
+**
+**
+**/
 int		ft_printf(char *fmt, ...);
+int		fmt_handler(void);
