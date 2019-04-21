@@ -1,63 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/17 01:36:40 by rgaia            ###   ########.fr       */
+/*   Created: 2017/12/05 21:58:08 by rgaia             #+#    #+#             */
+/*   Updated: 2019/03/10 00:43:03 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int		ft_printf(char *fmt, ...)
-{
-	int			len;
-	va_list		va;
+# include <fcntl.h>
+# include "libft.h"
 
-	len = 0;
-	va_start(va, fmt);
-	while (*fmt)
-	{
-		printf("While *fmt: %c\n", *fmt);
-		if (*fmt == '%')
-			//len += format_handler();
-		else
-		{
-			len += write(1, fmt, 1);
-		}
-		fmt++;
-	}
-	//va_end
-	return (len);
-}
+# define BUFF_SIZE 24000
+# define NUM_FDS 42
 
+int		get_next_line(const int fd, char **line);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif
