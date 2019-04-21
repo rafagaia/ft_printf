@@ -6,11 +6,11 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:08:52 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/17 01:33:53 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/21 13:23:00 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft/libft.h"
+#include "libft.h"
 #include <stdarg.h>
 #include <stdio.h> //DELETE
 
