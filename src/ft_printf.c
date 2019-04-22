@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/22 02:13:00 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/22 15:18:43 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,81 @@ int		s_handle(char **fmt, va_list *vargs)
 	return (ft_strlen(str));
 }
 
-
-//TODO
-int		p_handle(char **fmt, va_list *vargs)
+int				p_handle(char **fmt, va_list *vargs)
 {
-	void	*addr;
+	uintmax_t	addr;
+	char		*str;
+	int			len;
 
-	addr = (void*)va_arg(*vargs, void*);
+	addr = va_arg(*vargs, uintmax_t);
 	ft_putstr("0x");
-	ft_putnbr((int)addr);
-	return (1);
+	str = ft_itoa_base_unsigned(addr, 16);
+	ft_putstr(str);
+	len = 2 + ft_strlen(str);
+	free(str);
+	return (len);
 }
 
 int		di_handle(char **fmt, va_list *vargs)
 {
-	int		nbr;
+	long long	nbr;
 
-	nbr = (int)va_arg(*vargs, int);
+	nbr = va_arg(*vargs, long long);
 	ft_putnbr(nbr);
-	ft_putchar('\n');
-	ft_putnbr(ft_numdigit(nbr));
 	return (ft_numdigit(nbr));
 }
+
+int		o_handle(char **fmt, va_list *vargs)
+{
+	uintmax_t	nbr;
+	char		*str;
+	int			len;
+
+	nbr = va_arg(*vargs, uintmax_t);
+	str = ft_itoa_base_unsigned(nbr, 8);
+	ft_putstr(str);
+	len = ft_strlen(str);
+	free(str);
+	return (len);
+}
+
+int		u_handle(char **fmt, va_list *vargs)
+{
+	uintmax_t	nbr;
+	char		*str;
+	int			len;
+
+	nbr = va_arg(*vargs, uintmax_t);
+	str = ft_itoa_base_unsigned(nbr, 10);
+	ft_putstr(str);
+	len = ft_strlen(str);
+	free(str);
+	return (len);
+}
+
+int				xX_handle(char **fmt, va_list *vargs)
+{
+	uintmax_t	nbr;
+	char		*str;
+	int			len;
+	int			i;
+
+	i = -1;
+	nbr = va_arg(*vargs, uintmax_t);
+	str = ft_itoa_base_unsigned(nbr, 16);
+	if (**fmt == 'x')
+		ft_putstr(str);
+	else
+	{
+		while (str[++i])
+			str[i] = ft_toupper(str[i]);
+		ft_putstr(str);
+	}
+	len = ft_strlen(str);
+	free(str);
+	return (len);
+}
+
 
 int		format_handler(char **fmt, va_list *vargs)
 {
@@ -65,17 +118,15 @@ int		format_handler(char **fmt, va_list *vargs)
 	else if (**fmt == 's')
 		len = s_handle(fmt, vargs);
 	else if (**fmt == 'p')
-		len = p_handle(fmt, vargs);//TODO
+		len = p_handle(fmt, vargs);
 	else if ((**fmt == 'd') || (**fmt == 'i'))
 		len = di_handle(fmt, vargs);
 	else if (**fmt == 'o')
-		ft_putstr("[unsigned octal 'o']");
+		len = o_handle(fmt, vargs);
 	else if (**fmt == 'u')
-		ft_putstr("[unsigned int 'u']");
-	else if (**fmt == 'x')
-		ft_putstr("[unsigned hex lowercase 'x']");
-	else if (**fmt == 'X')
-		ft_putstr("[unsigned HEX uppercase 'X']");
+		u_handle(fmt, vargs);
+	else if ((**fmt == 'x') || (**fmt == 'X'))
+		xX_handle(fmt, vargs);
 	else
 		ft_putchar(**fmt);
 	return (len);
@@ -124,11 +175,10 @@ int		main(void)
 	char	str[1];
 
 	str[0] = '@';
-	x = -223;
+	x = 255;
 	// Known issue: ft_printf("%d\tLife"); will output space instead of tab.Why?
-	//ft_printf("%s%c%c%sLife\n", "yoyoyoyo", '$', '%', "hello");
-	ft_printf("Number:\n%d\n", x);
-	printf("String address: %p\n", &x);
+	ft_printf("ft_printf: %X\n", x);
+	printf("printf:  %X\n", x);
 	return (0);
 }
 
