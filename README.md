@@ -1,2 +1,2 @@
 # ft_printf
-My own implementation of C's &lt;stdio.h> printf() function
+My own implementation of printf() function in C
