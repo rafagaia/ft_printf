@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/25 04:26:58 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/25 05:32:16 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,30 +96,59 @@ int			get_nbr(char *fmt, char c)
 	ft_strdel(&nbr);
 	return (nbr_exist);
 }
+
+void		set_length(char *fmt, t_token *fmt_token)
+{
+	while (ft_isdigit(*fmt))
+		fmt++;
+	while (*fmt != fmt_token->conversion)
+	{
+		if (*fmt == 'l')
+		{
+			if (*(fmt + 1) == 'l')
+				ft_strcpy(fmt_token->length, "ll");
+			else if (*(fmt + 1) == fmt_token->conversion)
+				ft_strcpy(fmt_token->length, "l");
+			break;
+		}
+		else if (*fmt == 'h')
+		{
+			if (*(fmt + 1) == 'h')
+				ft_strcpy(fmt_token->length, "hh");
+			else if (*(fmt + 1) == fmt_token->conversion)
+				ft_strcpy(fmt_token->length, "h");
+			break;
+		}
+		fmt++;
+	}
+}
+
 /*
 ** @in: format string, and token struct to be built
 ** @out: 0: token was not built; 1: token built
 */
-int		build_token(char *fmt, t_token *fmt_token)
+int			build_token(char *fmt, t_token *fmt_token)
 {
 	int		p_index;
 
 	fmt_token->flag = '\0';
-	fmt_token->width = 0;
+	fmt_token->width = -1;
 	fmt_token->precision = -1;
 	fmt_token->conversion = '\0';
 	ft_strclr(fmt_token->length);
 	if ((fmt_token->conversion = get_conversion(fmt)) == '\0')
 		return (0);
 	fmt_token->flag = get_flag(fmt);
-	fmt_token->width = get_nbr(fmt, fmt_token->conversion);
-	p_index = (fmt_token->flag ? 1 : 0) + ft_numdigit(fmt_token->width);
+	fmt_token->width = get_nbr((fmt + (fmt_token->flag ? 1 : 0)), 
+								fmt_token->conversion);
+	p_index = (fmt_token->flag ? 1 : 0) + (fmt_token->width == 0 ? 0 : 
+											ft_numdigit(fmt_token->width));
 	if (fmt[p_index] == '.')
 		fmt_token->precision = get_nbr((fmt + p_index), fmt_token->conversion);
-	/*ft_strcpy(fmt_token->length, get_length(fmt));*/
-	printf("Build_token->\nconversion: %c\nflag: %c\nwidth: %d\nprecision: %d\n", 
+	set_length((fmt + p_index), fmt_token);
+	/*printf("Build_token->\nconversion: %c\nflag: %c\nwidth: %d\nprecision: %d\nlength:%s\n", 
 			fmt_token->conversion, fmt_token->flag, fmt_token->width, 
-			fmt_token->precision);
+			fmt_token->precision, fmt_token->length);*/
 	return (1);
 }
 
@@ -135,7 +164,7 @@ int		build_token(char *fmt, t_token *fmt_token)
 **		Minimum field-width
 **		Precision
 */
-int		ft_printf(char *fmt, ...)
+int				ft_printf(char *fmt, ...)
 {
 	int			len; //ft_printf total output string length
 	t_token		fmt_token;
@@ -152,6 +181,7 @@ int		ft_printf(char *fmt, ...)
 			{
 				len += token_handler(&fmt_token, &vargs);
 				fmt = ft_strchr(fmt, fmt_token.conversion);
+				ft_putendl("__________");
 			}
 			else
 				write(1, fmt, 1);

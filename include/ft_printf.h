@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:08:52 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/25 03:27:53 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/25 05:14:05 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct	s_token
 	char		flag;
 	int			width;
 	int			precision;
-	char		length[2];
+	char		length[3];
 	char		conversion;
 }				t_token;
 
