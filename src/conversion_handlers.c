@@ -6,13 +6,13 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 15:22:42 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/22 15:29:46 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/24 22:41:00 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-int		c_handle(char **fmt, va_list *vargs)
+int			c_handle(t_token *fmt_token, va_list *vargs)
 {
 	char	c;
 
@@ -21,7 +21,7 @@ int		c_handle(char **fmt, va_list *vargs)
 	return (1);
 }
 
-int		s_handle(char **fmt, va_list *vargs)
+int			s_handle(t_token *fmt_token, va_list *vargs)
 {
 	char	*str;
 
@@ -30,7 +30,7 @@ int		s_handle(char **fmt, va_list *vargs)
 	return (ft_strlen(str));
 }
 
-int				p_handle(char **fmt, va_list *vargs)
+int				p_handle(t_token *fmt_token, va_list *vargs)
 {
 	uintmax_t	addr;
 	char		*str;
@@ -45,7 +45,7 @@ int				p_handle(char **fmt, va_list *vargs)
 	return (len);
 }
 
-int		di_handle(char **fmt, va_list *vargs)
+int				di_handle(t_token *fmt_token, va_list *vargs)
 {
 	long long	nbr;
 
@@ -54,7 +54,7 @@ int		di_handle(char **fmt, va_list *vargs)
 	return (ft_numdigit(nbr));
 }
 
-int		o_handle(char **fmt, va_list *vargs)
+int				o_handle(t_token *fmt_token, va_list *vargs)
 {
 	uintmax_t	nbr;
 	char		*str;
@@ -68,7 +68,7 @@ int		o_handle(char **fmt, va_list *vargs)
 	return (len);
 }
 
-int		u_handle(char **fmt, va_list *vargs)
+int				u_handle(t_token *fmt_token, va_list *vargs)
 {
 	uintmax_t	nbr;
 	char		*str;
@@ -82,7 +82,7 @@ int		u_handle(char **fmt, va_list *vargs)
 	return (len);
 }
 
-int				xX_handle(char **fmt, va_list *vargs)
+int				xX_handle(t_token *fmt_token, va_list *vargs)
 {
 	uintmax_t	nbr;
 	char		*str;
@@ -92,7 +92,7 @@ int				xX_handle(char **fmt, va_list *vargs)
 	i = -1;
 	nbr = va_arg(*vargs, uintmax_t);
 	str = ft_itoa_base_unsigned(nbr, 16);
-	if (**fmt == 'x')
+	if (fmt_token->conversion == 'x')
 		ft_putstr(str);
 	else
 	{

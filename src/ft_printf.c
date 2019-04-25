@@ -6,37 +6,121 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/22 15:38:48 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/25 04:26:58 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
-#include <stdio.h> //DELETE - USE FOR TESTING ONLY
 
-int		format_handler(char **fmt, va_list *vargs)
+int		token_handler(t_token *fmt_token, va_list *vargs)
 {
 	int		len;
+	char	c;
 
 	len = 1;
-	if (**fmt == '%')
+	c = fmt_token->conversion;
+	if (c == '%')
 		ft_putstr("%");
-	else if (**fmt == 'c')
-		len = c_handle(fmt, vargs);
-	else if (**fmt == 's')
-		len = s_handle(fmt, vargs);
-	else if (**fmt == 'p')
-		len = p_handle(fmt, vargs);
-	else if ((**fmt == 'd') || (**fmt == 'i'))
-		len = di_handle(fmt, vargs);
-	else if (**fmt == 'o')
-		len = o_handle(fmt, vargs);
-	else if (**fmt == 'u')
-		u_handle(fmt, vargs);
-	else if ((**fmt == 'x') || (**fmt == 'X'))
-		xX_handle(fmt, vargs);
+	else if (c == 'c')
+		len = c_handle(fmt_token, vargs);
+	else if (c == 's')
+		len = s_handle(fmt_token, vargs);
+	else if (c == 'p')
+		len = p_handle(fmt_token, vargs);
+	else if ((c == 'd') || (c == 'i'))
+		len = di_handle(fmt_token, vargs);
+	else if (c == 'o')
+		len = o_handle(fmt_token, vargs);
+	else if (c == 'u')
+		u_handle(fmt_token, vargs);
+	else if ((c == 'x') || (c == 'X'))
+		xX_handle(fmt_token, vargs);
 	else
-		ft_putchar(**fmt);
+		ft_putchar(c);
 	return (len);
+}
+
+char		get_conversion(char *fmt)
+{
+	char	c;
+
+	while (*fmt)
+	{
+		c = *fmt++;
+		if ((c == '%') || (c == 'c') || (c == 's') || (c == 'p') || 
+			(c == 'd') || (c == 'i') || (c == 'o') || (c == 'u') || 
+			(c == 'x') || (c == 'X'))
+		{
+			return (c);
+		}
+	}
+	return ('\0');
+}
+
+char		get_flag(char *fmt)
+{
+	char	c;
+
+	c = *fmt;
+	if ((c == '#') || (c == '-') || (c == '+') || (c == ' ') || (c == '0'))
+		return (c);
+	return ('\0');
+}
+
+int			get_nbr(char *fmt, char c)
+{
+	int		i;
+	int		j;
+	int		nbr_exist;
+	char	*nbr;
+
+	i = 0;
+	nbr_exist = 0;
+	while ((fmt[i] != c))
+	{
+		j = i;
+		if (ft_isdigit(fmt[i]))
+		{
+			nbr_exist = 1;
+			break;
+		}
+		i++;
+	}
+	while (ft_isdigit(fmt[i]))
+		i++;
+	if (nbr_exist == 1)
+		nbr = ft_strndup((fmt + j), (i - j));
+	else
+		return (0);
+	nbr_exist = ft_atoi(nbr);
+	ft_strdel(&nbr);
+	return (nbr_exist);
+}
+/*
+** @in: format string, and token struct to be built
+** @out: 0: token was not built; 1: token built
+*/
+int		build_token(char *fmt, t_token *fmt_token)
+{
+	int		p_index;
+
+	fmt_token->flag = '\0';
+	fmt_token->width = 0;
+	fmt_token->precision = -1;
+	fmt_token->conversion = '\0';
+	ft_strclr(fmt_token->length);
+	if ((fmt_token->conversion = get_conversion(fmt)) == '\0')
+		return (0);
+	fmt_token->flag = get_flag(fmt);
+	fmt_token->width = get_nbr(fmt, fmt_token->conversion);
+	p_index = (fmt_token->flag ? 1 : 0) + ft_numdigit(fmt_token->width);
+	if (fmt[p_index] == '.')
+		fmt_token->precision = get_nbr((fmt + p_index), fmt_token->conversion);
+	/*ft_strcpy(fmt_token->length, get_length(fmt));*/
+	printf("Build_token->\nconversion: %c\nflag: %c\nwidth: %d\nprecision: %d\n", 
+			fmt_token->conversion, fmt_token->flag, fmt_token->width, 
+			fmt_token->precision);
+	return (1);
 }
 
 /*
@@ -53,7 +137,8 @@ int		format_handler(char **fmt, va_list *vargs)
 */
 int		ft_printf(char *fmt, ...)
 {
-	int			len;
+	int			len; //ft_printf total output string length
+	t_token		fmt_token;
 	va_list		vargs;
 
 	len = 0;
@@ -63,7 +148,13 @@ int		ft_printf(char *fmt, ...)
 		if (*fmt == '%')
 		{
 			fmt++; //increment to index after '%'
-			len += format_handler(&fmt, &vargs);
+			if (build_token(fmt, &fmt_token))
+			{
+				len += token_handler(&fmt_token, &vargs);
+				fmt = ft_strchr(fmt, fmt_token.conversion);
+			}
+			else
+				write(1, fmt, 1);
 		}
 		else
 		{
@@ -74,40 +165,6 @@ int		ft_printf(char *fmt, ...)
 	va_end(vargs);
 	return (len);
 }
-
-int		main(void)
-{
-	int		x;
-	char	str[1];
-
-	str[0] = '@';
-	x = 255;
-	// Known issue: ft_printf("%d\tLife"); will output space instead of tab.Why?
-	ft_printf("ft_printf: c:%c; s:%s; p:%p\n", 'c', "ass", &x);
-	printf("printf: c:%c; s:%s; p:%p\n", 'c', "ass", &x);
-	
-	return (0);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
