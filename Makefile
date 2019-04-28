@@ -6,7 +6,7 @@
 #    By: rgaia <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/23 21:52:40 by rgaia             #+#    #+#              #
-#    Updated: 2019/04/25 05:58:17 by rgaia            ###   ########.fr        #
+#    Updated: 2019/04/25 17:21:42 by rgaia            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ NAME =	libftprintf.a
 SRC_DIR = src/
 LIB_DIR = lib/
 
-SRC_FILES = ft_printf.c cspdiu_conversions.c oxXf_conversions.c tokenizer.c
+SRC_FILES = ft_printf.c cspdiu_conversions.c oxXf_conversions.c tokenizer.c \
+			modifiers.c \
+
 LIB_FILES = libft.a
 
 

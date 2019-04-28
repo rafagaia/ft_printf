@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:46:36 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/25 05:49:17 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 03:15:02 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int			build_token(char *fmt, t_token *fmt_token)
 {
 	int		p_index;
 
-	fmt_token->flag = '\0';
 	fmt_token->width = -1;
 	fmt_token->precision = -1;
 	fmt_token->conversion = '\0';

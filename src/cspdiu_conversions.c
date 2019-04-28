@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:56:17 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/25 05:57:25 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 03:36:29 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,34 @@ int				p_handle(t_token *fmt_token, va_list *vargs)
 	return (len);
 }
 
-int				di_handle(t_token *fmt_token, va_list *vargs)
+intmax_t		di_handle(t_token *fmt_token, va_list *vargs)
 {
-	long long	nbr;
+	intmax_t	nbr;
+	char		*str;
 
-	nbr = va_arg(*vargs, long long);
-	ft_putnbr(nbr);
-	return (ft_numdigit(nbr));
+	if ((fmt_token->length)[0])
+		nbr = (int)length_handle(-1, fmt_token->length, vargs);
+	else
+		nbr = (int)va_arg(*vargs, intmax_t);
+	str = ft_itoa(nbr);
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);
+	ft_putstr(str);
+	nbr = ft_strlen(str);
+	ft_strdel(&str);
+	return (nbr);
 }
 
-int				u_handle(t_token *fmt_token, va_list *vargs)
+uintmax_t		u_handle(t_token *fmt_token, va_list *vargs)
 {
 	uintmax_t	nbr;
 	char		*str;
 	int			len;
 
-	nbr = va_arg(*vargs, uintmax_t);
+	if ((fmt_token->length)[0])
+		nbr = length_handle(1, fmt_token->length, vargs);
+	else
+		nbr = (unsigned int)va_arg(*vargs, uintmax_t);
 	str = ft_itoa_base_unsigned(nbr, 10);
 	ft_putstr(str);
 	len = ft_strlen(str);

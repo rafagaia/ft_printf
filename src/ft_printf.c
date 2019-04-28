@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/25 05:53:11 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 02:39:28 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int		token_handler(t_token *fmt_token, va_list *vargs)
 	else if (c == 'o')
 		len = o_handle(fmt_token, vargs);
 	else if (c == 'u')
-		u_handle(fmt_token, vargs);
+		len = u_handle(fmt_token, vargs);
 	else if ((c == 'x') || (c == 'X'))
-		xX_handle(fmt_token, vargs);
+		len = xX_handle(fmt_token, vargs);
 	else
 		ft_putchar(c);
 	return (len);
@@ -78,6 +78,7 @@ int				ft_printf(char *fmt, ...)
 			len += write(1, fmt, 1);
 		}
 		++fmt;
+		//continue ; statement necessary? what's it for?
 	}
 	va_end(vargs);
 	return (len);
