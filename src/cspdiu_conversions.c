@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:56:17 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 03:36:29 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 17:41:14 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ uintmax_t		u_handle(t_token *fmt_token, va_list *vargs)
 	else
 		nbr = (unsigned int)va_arg(*vargs, uintmax_t);
 	str = ft_itoa_base_unsigned(nbr, 10);
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);
 	ft_putstr(str);
 	len = ft_strlen(str);
 	free(str);

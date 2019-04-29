@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_test.c	                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 23:14:54 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 03:40:32 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 17:39:44 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,22 @@ int		main(void)
 	str = ft_strdup("42Life");
 /*	printf("Test2: {individual} <conversion> specifier Tests:\n");
 	test_conversion_specifiers();*/
-	//printf("Hello:%5d\n", 42);
-	ft_putnbr(ft_printf(":%d:", 42));
+	std_len = printf("[std] Hello:%-8d:\n", 42);
+	ft_len = ft_printf("[ft]  Hello:%-8d:\n", 42);
+	if (std_len != ft_len)
+		printf("Bad ft_printf return len\n");
+	std_len = printf("[std] Hello:%08d:\n", 42);
+	ft_len = ft_printf("[ft]  Hello:%08d:\n", 42);
+	if (std_len != ft_len)
+		printf("Bad ft_printf return len\n");
+	std_len = printf("[std] :%+8d:\n", 42);
+	ft_len = ft_printf("[ft]  :%+8d:\n", 42);
+	if (std_len != ft_len)
+		printf("Bad ft_printf return len\n");
+	std_len = printf("[std] Hello:%+2d:\n", 42);
+	ft_len = ft_printf("[ft]  Hello:%+2d:\n", 42);
+	if (std_len != ft_len)
+		printf("Bad ft_printf return len\n");
 	ft_strdel(&str);
 	return (0);
 }

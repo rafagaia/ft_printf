@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:05:07 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 03:39:05 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 17:36:55 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,14 @@ uintmax_t		length_handle(int sign, char *modifier, va_list *vargs)
 */
 char			*padding_handle(char flag, int width, char *str)
 {
+	int			i;
 	int			str_len;
 	int			out_len;
 	char		pad;
 	char		*out_str;
 
+//	printf("Padding_handle:flag:%c,width:%d,str:%s\n", flag, width, str);
+	i = 0;
 	pad = ' '; //(default) padding for when only width is passed
 	str_len = ft_strlen(str);
 	if (width <= str_len)
@@ -65,19 +68,23 @@ char			*padding_handle(char flag, int width, char *str)
 	out_len = width;
 	if (flag == '0')
 		pad = '0';
-	if (! (out_str = ft_strnew(out_len + (flag == '+' ? 1 : 0))))
+	if (! (out_str = ft_strnew(out_len)))
 		ft_puterror("Bad padding strnew", -1);
-	if (flag == '+')
-		out_str[0] = '+';
 	//if left-align, store str first, then zero's or space
 	if (flag == '-')
 	{
-		ft_strcat(out_str, str);
-		ft_strncat(out_str, &pad, (width - str_len));
+		ft_strcpy(out_str, str);
+		i = ft_strlen(str);
+		while (i < width)
+			out_str[i++] = pad;
 	}
 	else //(default): right-align (fill pad first)
 	{
-		ft_strncat(out_str, &pad, (width - str_len));
+		width = width - str_len;
+		while (i < width)
+			out_str[i++] = pad;
+		if (flag == '+')
+			out_str[--i] = '+';
 		ft_strcat(out_str, str);
 	}
 	return (out_str);

@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:55:47 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/27 21:43:22 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 17:44:19 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int				o_handle(t_token *fmt_token, va_list *vargs)
 	else
 		nbr = va_arg(*vargs, int);
 	str = ft_itoa_base_unsigned(nbr, 8);
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);	
 	ft_putstr(str);
 	len = ft_strlen(str);
 	free(str);
@@ -31,7 +33,7 @@ int				o_handle(t_token *fmt_token, va_list *vargs)
 
 int				xX_handle(t_token *fmt_token, va_list *vargs)
 {
-	uintmax_t	nbr;
+	intmax_t	nbr;
 	char		*str;
 	int			len;
 	int			i;
@@ -42,6 +44,8 @@ int				xX_handle(t_token *fmt_token, va_list *vargs)
 	else
 		nbr = (int)va_arg(*vargs, uintmax_t);
 	str = ft_itoa_base_unsigned(nbr, 16);
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);
 	if (fmt_token->conversion == 'x')
 		ft_putstr(str);
 	else
