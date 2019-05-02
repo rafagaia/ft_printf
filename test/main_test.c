@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 23:14:54 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 17:39:44 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/29 07:57:04 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,33 +29,11 @@ octal:%o\nunsigned:%u\nhex:%x\nHEX:%X\n", c, str, &x, x, x, x, x, 0xff, 0xff);
 	ft_strdel(&str);
 }
 
-/*
-** Known issues:
-**	1. ft_printf("%d\tLife", 42); will output space instead of tab.Why?
-**	2.
-*/
-
-/*
-**	Tests following "unit" sections of our ft_printf implementation:
-**		1.	Tokenization "*fmt" elements following STDIO.h Syntax Specifier
-**			Convention:	%[flags][width][precision][length]<conversion> 
-**		2.	Test each Token individually
-**		3.	Integrate in Combinations of 2
-**		4.	Integrate in Combinations of 3
-*/
-int		main(void)
+void		test_padding(void)
 {
 	int		ft_len;
 	int		std_len;
-	char	c;
-	char	*str;
-	int		n;
-
-	n = -420;
-	c = '@';
-	str = ft_strdup("42Life");
-/*	printf("Test2: {individual} <conversion> specifier Tests:\n");
-	test_conversion_specifiers();*/
+	
 	std_len = printf("[std] Hello:%-8d:\n", 42);
 	ft_len = ft_printf("[ft]  Hello:%-8d:\n", 42);
 	if (std_len != ft_len)
@@ -72,6 +50,35 @@ int		main(void)
 	ft_len = ft_printf("[ft]  Hello:%+2d:\n", 42);
 	if (std_len != ft_len)
 		printf("Bad ft_printf return len\n");
+}
+
+/*
+** Known issues:
+**	1. ft_printf("%d\tLife", 42); will output space instead of tab.Why?
+**	2.
+*/
+
+/*
+**	Tests following "unit" sections of our ft_printf implementation:
+**		1.	Tokenization "*fmt" elements following STDIO.h Syntax Specifier
+**			Convention:	%[flags][width][precision][length]<conversion> 
+**		2.	Test each Token individually
+**		3.	Integrate in Combinations of 2
+**		4.	Integrate in Combinations of 3
+*/
+int		main(void)
+{
+	char	c;
+	char	*str;
+	int		n;
+
+	n = -420;
+	c = '@';
+	str = ft_strdup("42Life");
+	//printf("Test2: {individual} <conversion> specifier Tests:\n");
+	test_conversion_specifiers();
+	test_padding();
+	ft_printf("%#x\n", 0);
 	ft_strdel(&str);
 	return (0);
 }

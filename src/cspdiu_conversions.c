@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:56:17 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 17:41:14 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/01 22:55:51 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 int			c_handle(t_token *fmt_token, va_list *vargs)
 {
-	char	c;
+	char	*str;
 
-	c = (char)va_arg(*vargs, int);
-	ft_putchar(c);
+	str = ft_strnew(1);
+	str[0] = (char)va_arg(*vargs, int);
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);
+	ft_putchar(*str);
 	return (1);
 }
 
@@ -26,6 +29,13 @@ int			s_handle(t_token *fmt_token, va_list *vargs)
 	char	*str;
 
 	str = va_arg(*vargs, char*);
+	if (!str)
+	{
+		ft_putstr("(null)");
+		return (0);
+	}
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);
 	ft_putstr(str);
 	return (ft_strlen(str));
 }
@@ -36,11 +46,14 @@ int				p_handle(t_token *fmt_token, va_list *vargs)
 	char		*str;
 	int			len;
 
-	addr = va_arg(*vargs, uintmax_t);
-	ft_putstr("0x");
-	str = ft_itoa_base_unsigned(addr, 16);
+	addr = va_arg(*vargs, uintmax_t);;
+	str = ft_strnew(sizeof(addr) + 2);
+	ft_strcpy(str, "0x");
+	ft_strcat(str, ft_itoa_base_unsigned(addr, 16));
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);
 	ft_putstr(str);
-	len = 2 + ft_strlen(str);
+	len = ft_strlen(str);
 	free(str);
 	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 02:39:28 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/01 22:31:41 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int		token_handler(t_token *fmt_token, va_list *vargs)
 	c = fmt_token->conversion;
 	if (c == '%')
 		ft_putstr("%");
-	else if (c == 'c')
+	else if ((c == 'c') || (c == 'C'))
 		len = c_handle(fmt_token, vargs);
-	else if (c == 's')
+	else if ((c == 's') || (c == 'S'))
 		len = s_handle(fmt_token, vargs);
 	else if (c == 'p')
 		len = p_handle(fmt_token, vargs);
@@ -31,7 +31,7 @@ int		token_handler(t_token *fmt_token, va_list *vargs)
 		len = di_handle(fmt_token, vargs);
 	else if (c == 'o')
 		len = o_handle(fmt_token, vargs);
-	else if (c == 'u')
+	else if ((c == 'u') || (c == 'U'))
 		len = u_handle(fmt_token, vargs);
 	else if ((c == 'x') || (c == 'X'))
 		len = xX_handle(fmt_token, vargs);
@@ -78,14 +78,8 @@ int				ft_printf(char *fmt, ...)
 			len += write(1, fmt, 1);
 		}
 		++fmt;
-		//continue ; statement necessary? what's it for?
 	}
 	va_end(vargs);
 	return (len);
 }
-
-
-
-
-
 

@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:05:07 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 17:36:55 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/04/28 18:10:50 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ uintmax_t		length_handle(int sign, char *modifier, va_list *vargs)
 	}
 	return (sign);
 }
+
+
+
+
 
 /*
 ** Handles [flags]: 0 pad; ' ' (space) pad; '-' left align; '+' positive number
