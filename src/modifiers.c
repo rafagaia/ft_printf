@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:05:07 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/28 18:10:50 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/06 15:03:37 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** d (decimal integers),i (integer specifically), u (unsigned decimal int)
 ** o (octal integers), x, X (hexa int)
 */
+
 uintmax_t		length_handle(int sign, char *modifier, va_list *vargs)
 {
 	if (sign == -1)
@@ -45,44 +46,42 @@ uintmax_t		length_handle(int sign, char *modifier, va_list *vargs)
 	return (sign);
 }
 
+void			minus_flag_handler(char *out_str, char *str, int width, char p)
+{
+	int			i;
 
-
-
+	i = ft_strlen(str);
+	ft_strcpy(out_str, str);
+	while (i < width)
+		out_str[i++] = p;
+}
 
 /*
 ** Handles [flags]: 0 pad; ' ' (space) pad; '-' left align; '+' positive number
 ** All using the [width] value passed in
 ** If '\0' flag: pads with <space> character by default, <pad> otherwise
 ** Allocates and returns new formatted string ready to be printed to STDOUT
+** (default): right-align (fill pad first)
 */
+
 char			*padding_handle(char flag, int width, char *str)
 {
 	int			i;
 	int			str_len;
-	int			out_len;
 	char		pad;
 	char		*out_str;
 
-//	printf("Padding_handle:flag:%c,width:%d,str:%s\n", flag, width, str);
 	i = 0;
-	pad = ' '; //(default) padding for when only width is passed
 	str_len = ft_strlen(str);
-	if (width <= str_len)
-		return (str);
-	out_len = width;
+	pad = ' ';
 	if (flag == '0')
 		pad = '0';
-	if (! (out_str = ft_strnew(out_len)))
-		ft_puterror("Bad padding strnew", -1);
-	//if left-align, store str first, then zero's or space
+	if (width <= str_len)
+		return (str);
+	out_str = ft_strnew(width);
 	if (flag == '-')
-	{
-		ft_strcpy(out_str, str);
-		i = ft_strlen(str);
-		while (i < width)
-			out_str[i++] = pad;
-	}
-	else //(default): right-align (fill pad first)
+		minus_flag_handler(out_str, str, width, pad);
+	else
 	{
 		width = width - str_len;
 		while (i < width)
@@ -93,4 +92,3 @@ char			*padding_handle(char flag, int width, char *str)
 	}
 	return (out_str);
 }
-

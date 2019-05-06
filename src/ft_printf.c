@@ -6,16 +6,16 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/01 22:31:41 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/06 15:12:44 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-int		token_handler(t_token *fmt_token, va_list *vargs)
+int				token_handler(t_token *fmt_token, va_list *vargs)
 {
-	int		len;
-	char	c;
+	int			len;
+	char		c;
 
 	len = 1;
 	c = fmt_token->conversion;
@@ -34,7 +34,7 @@ int		token_handler(t_token *fmt_token, va_list *vargs)
 	else if ((c == 'u') || (c == 'U'))
 		len = u_handle(fmt_token, vargs);
 	else if ((c == 'x') || (c == 'X'))
-		len = xX_handle(fmt_token, vargs);
+		len = x_handle(fmt_token, vargs);
 	else
 		ft_putchar(c);
 	return (len);
@@ -47,14 +47,15 @@ int		token_handler(t_token *fmt_token, va_list *vargs)
 ** 2. With FLAGS:
 **		h, hh, l, ll
 **		#, 0, -, +, space
-** 3. Must manage: 
+** 3. Must manage:
 **		%% (percent character)
 **		Minimum field-width
 **		Precision
 */
+
 int				ft_printf(char *fmt, ...)
 {
-	int			len; //ft_printf total output string length
+	int			len;
 	t_token		fmt_token;
 	va_list		vargs;
 
@@ -64,7 +65,7 @@ int				ft_printf(char *fmt, ...)
 	{
 		if (*fmt == '%')
 		{
-			fmt++; //increment to index after '%'
+			fmt++;
 			if (build_token(fmt, &fmt_token))
 			{
 				len += token_handler(&fmt_token, &vargs);
@@ -74,12 +75,9 @@ int				ft_printf(char *fmt, ...)
 				write(1, fmt, 1);
 		}
 		else
-		{
 			len += write(1, fmt, 1);
-		}
 		++fmt;
 	}
 	va_end(vargs);
 	return (len);
 }
-

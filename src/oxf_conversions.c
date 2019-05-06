@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   oxXf_conversions.c                                 :+:      :+:    :+:   */
+/*   oxf_conversions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:55:47 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/30 23:58:49 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/06 15:21:29 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ int				o_handle(t_token *fmt_token, va_list *vargs)
 	else
 		nbr = va_arg(*vargs, intmax_t);
 	str = ft_itoa_base_unsigned(nbr, 8);
-	if (fmt_token->width)
-		str = padding_handle(fmt_token->flag, fmt_token->width, str);	
 	if (fmt_token->flag == '#')
 	{
-		tmp = ft_strjoin("0x", str);
+		tmp = ft_strjoin("0", str);
 		ft_strdel(&str);
 		str = tmp;
 	}
@@ -38,22 +36,12 @@ int				o_handle(t_token *fmt_token, va_list *vargs)
 	return (len);
 }
 
-int				xX_handle(t_token *fmt_token, va_list *vargs)
+int				x_handle_helper(t_token *fmt_token, char *str)
 {
-	uintmax_t	nbr;
-	char		*str;
-	char		*tmp;
-	int			len;
 	int			i;
+	char		*tmp;
 
 	i = -1;
-	if ((fmt_token->length)[0])
-		nbr = length_handle(1, fmt_token->length, vargs);
-	else
-		nbr = va_arg(*vargs, uintmax_t);
-	str = ft_itoa_base_unsigned(nbr, 16);
-	if (fmt_token->width)
-		str = padding_handle(fmt_token->flag, fmt_token->width, str);
 	if (fmt_token->flag == '#')
 	{
 		tmp = ft_strjoin("0x", str);
@@ -68,7 +56,23 @@ int				xX_handle(t_token *fmt_token, va_list *vargs)
 			str[i] = ft_toupper(str[i]);
 		ft_putstr(str);
 	}
-	len = ft_strlen(str);
+	return ((ft_strlen(str)));
+}
+
+int				x_handle(t_token *fmt_token, va_list *vargs)
+{
+	uintmax_t	nbr;
+	char		*str;
+	int			len;
+
+	if ((fmt_token->length)[0])
+		nbr = length_handle(1, fmt_token->length, vargs);
+	else
+		nbr = va_arg(*vargs, uintmax_t);
+	str = ft_itoa_base_unsigned(nbr, 16);
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, str);
+	len = x_handle_helper(fmt_token, str);
 	free(str);
 	return (len);
 }

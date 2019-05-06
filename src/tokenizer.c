@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:46:36 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/01 22:41:13 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/06 15:43:17 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char		get_conversion(char *fmt)
 		c = *fmt++;
 		if ((c == '%') || (c == 'c') || (c == 'C') ||
 			(c == 's') || (c == 'S') || (c == 'p') ||
-			(c == 'd') || (c == 'i') || (c == 'o') || 
+			(c == 'd') || (c == 'i') || (c == 'o') ||
 			(c == 'u') || (c == 'U') || (c == 'x') || (c == 'X'))
 		{
 			return (c);
@@ -40,36 +40,6 @@ char		get_flag(char *fmt)
 	return ('\0');
 }
 
-int			get_nbr(char *fmt, char c)
-{
-	int		i;
-	int		j;
-	int		nbr_exist;
-	char	*nbr;
-
-	i = 0;
-	nbr_exist = 0;
-	while ((fmt[i] != c))
-	{
-		j = i;
-		if (ft_isdigit(fmt[i]))
-		{
-			nbr_exist = 1;
-			break;
-		}
-		i++;
-	}
-	while (ft_isdigit(fmt[i]))
-		i++;
-	if (nbr_exist == 1)
-		nbr = ft_strndup((fmt + j), (i - j));
-	else
-		return (0);
-	nbr_exist = ft_atoi(nbr);
-	ft_strdel(&nbr);
-	return (nbr_exist);
-}
-
 void		set_length(char *fmt, t_token *fmt_token)
 {
 	while (ft_isdigit(*fmt))
@@ -82,7 +52,7 @@ void		set_length(char *fmt, t_token *fmt_token)
 				ft_strcpy(fmt_token->length, "ll");
 			else if (*(fmt + 1) == fmt_token->conversion)
 				ft_strcpy(fmt_token->length, "l");
-			break;
+			break ;
 		}
 		else if (*fmt == 'h')
 		{
@@ -90,7 +60,7 @@ void		set_length(char *fmt, t_token *fmt_token)
 				ft_strcpy(fmt_token->length, "hh");
 			else if (*(fmt + 1) == fmt_token->conversion)
 				ft_strcpy(fmt_token->length, "h");
-			break;
+			break ;
 		}
 		fmt++;
 	}
@@ -100,6 +70,7 @@ void		set_length(char *fmt, t_token *fmt_token)
 ** @in: format string, and token struct to be built
 ** @out: 0: token was not built; 1: token built
 */
+
 int			build_token(char *fmt, t_token *fmt_token)
 {
 	int		p_index;
@@ -116,10 +87,10 @@ int			build_token(char *fmt, t_token *fmt_token)
 	p_index = (fmt_token->flag ? 1 : 0) + (fmt_token->width == 0 ? 0 :
 											ft_numdigit(fmt_token->width));
 	if (fmt[p_index] == '.')
-		fmt_token->precision = get_nbr((fmt + p_index), fmt_token->conversion);
+	{
+		fmt_token->precision = get_nbr((fmt + p_index + 1),
+				fmt_token->conversion);
+	}
 	set_length((fmt + p_index), fmt_token);
-	/*printf("Build_token->\nconversion: %c\nflag: %c\nwidth: %d\nprecision: %d\nlength:%s\n",
-			fmt_token->conversion, fmt_token->flag, fmt_token->width,
-			fmt_token->precision, fmt_token->length);*/
 	return (1);
 }
