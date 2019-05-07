@@ -6,11 +6,19 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:46:36 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/06 15:43:17 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/07 15:01:31 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
+
+int			is_conversion_specifier(char c)
+{
+	return ((c == '%') || (c == 'c') || (c == 'C') ||
+		(c == 's') || (c == 'S') || (c == 'p') ||
+		(c == 'd') || (c == 'i') || (c == 'o') ||
+		(c == 'u') || (c == 'U') || (c == 'x') || (c == 'X'));
+}
 
 char		get_conversion(char *fmt)
 {
@@ -19,13 +27,8 @@ char		get_conversion(char *fmt)
 	while (*fmt)
 	{
 		c = *fmt++;
-		if ((c == '%') || (c == 'c') || (c == 'C') ||
-			(c == 's') || (c == 'S') || (c == 'p') ||
-			(c == 'd') || (c == 'i') || (c == 'o') ||
-			(c == 'u') || (c == 'U') || (c == 'x') || (c == 'X'))
-		{
+		if (is_conversion_specifier(c))
 			return (c);
-		}
 	}
 	return ('\0');
 }
