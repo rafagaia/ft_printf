@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:56:17 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/06 15:10:20 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/08 16:31:51 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int				s_handle(t_token *fmt_token, va_list *vargs)
 	if (!str)
 	{
 		ft_putstr("(null)");
-		return (0);
+		return (6);
 	}
 	if (fmt_token->width)
 		str = padding_handle(fmt_token->flag, fmt_token->width, str);
