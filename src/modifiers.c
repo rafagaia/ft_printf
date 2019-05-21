@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:05:07 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/06 15:03:37 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/15 23:05:21 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,24 @@ uintmax_t		length_handle(int sign, char *modifier, va_list *vargs)
 	if (sign == -1)
 	{
 		if (ft_strequ(modifier, "l"))
-			return ((signed long int)va_arg(*vargs, intmax_t));
+			return (va_arg(*vargs, signed long));
 		else if (ft_strequ(modifier, "ll"))
-			return ((signed long long int)va_arg(*vargs, intmax_t));
+			return (va_arg(*vargs, signed long long));
 		else if (ft_strequ(modifier, "h"))
-			return ((signed short int)va_arg(*vargs, intmax_t));
+			return ((signed short)va_arg(*vargs, int));
 		else if (ft_strequ(modifier, "hh"))
-			return ((signed char)va_arg(*vargs, intmax_t));
+			return ((signed char)va_arg(*vargs, int));
 	}
 	else if (sign == 1)
 	{
 		if (ft_strequ(modifier, "l"))
-			return ((unsigned long int)va_arg(*vargs, intmax_t));
+			return (va_arg(*vargs, unsigned long));
 		else if (ft_strequ(modifier, "ll"))
-			return ((unsigned long long int)va_arg(*vargs, intmax_t));
+			return (va_arg(*vargs, unsigned long long));
 		else if (ft_strequ(modifier, "h"))
-			return ((unsigned short int)va_arg(*vargs, intmax_t));
+			return ((unsigned short)va_arg(*vargs, unsigned int));
 		else if (ft_strequ(modifier, "hh"))
-			return ((unsigned char)va_arg(*vargs, intmax_t));
+			return ((unsigned char)va_arg(*vargs, unsigned int));
 	}
 	return (sign);
 }
@@ -90,5 +90,40 @@ char			*padding_handle(char flag, int width, char *str)
 			out_str[--i] = '+';
 		ft_strcat(out_str, str);
 	}
+	//ft_strdel(&str);
 	return (out_str);
 }
+
+char		*s_precision(int precision, char *str)
+{
+	int		len;
+	
+	len = ft_strlen(str);
+	if (precision > len)
+		return (padding_handle('0', precision, str));
+	return (ft_strndup(str, precision));	
+}
+
+/*
+** For non-flating numbers (d,i,o,x,X), precision_handle outputs the MIN number
+** of digits from @in string 'str'
+** Trims from 'tail' and outputs 'str' trimmed by 'num_print' characters,
+** or adds zeros if num_print > strlen(str)
+*/
+char		*precision_handle(t_token *fmt_token, char *str)
+{
+	if (fmt_token->conversion == 's')
+		return (s_precision(fmt_token->precision, str));
+	
+	return (NULL);
+}
+
+
+
+
+
+
+
+
+
+

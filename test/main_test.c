@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 23:14:54 by rgaia             #+#    #+#             */
-/*   Updated: 2019/04/29 07:57:04 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/11 22:26:49 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,16 @@ void		test_padding(void)
 */
 int		main(void)
 {
-	char	c;
-	char	*str;
-	int		n;
 
-	n = -420;
-	c = '@';
-	str = ft_strdup("42Life");
 	//printf("Test2: {individual} <conversion> specifier Tests:\n");
-	test_conversion_specifiers();
-	test_padding();
-	ft_printf("%#x\n", 0);
-	ft_strdel(&str);
+	//test_conversion_specifiers();
+	//test_padding();
+	
+	printf("Basic tests ---------------------------\n");
+	printf("%x", -42)
+	ft_printf("%x", -42)
+
+	printf("Precision tests ------------------------------------\n");
+	
 	return (0);
 }

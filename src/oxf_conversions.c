@@ -6,11 +6,25 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:55:47 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/06 15:21:29 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/11 22:22:17 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
+
+int				percent_handle(t_token *fmt_token)
+{
+	char		*str;
+	int			len;
+
+	str = ft_strdup("%");
+	if (fmt_token->width)
+		str = padding_handle(fmt_token->flag, fmt_token->width, "%");
+	ft_putstr(str);
+	len = ft_strlen(str);
+	ft_strdel(&str);
+	return (len);
+}
 
 int				o_handle(t_token *fmt_token, va_list *vargs)
 {
@@ -32,7 +46,6 @@ int				o_handle(t_token *fmt_token, va_list *vargs)
 	}
 	ft_putstr(str);
 	len = ft_strlen(str);
-	free(str);
 	return (len);
 }
 
@@ -59,16 +72,16 @@ int				x_handle_helper(t_token *fmt_token, char *str)
 	return ((ft_strlen(str)));
 }
 
-int				x_handle(t_token *fmt_token, va_list *vargs)
+int					x_handle(t_token *fmt_token, va_list *vargs)
 {
-	uintmax_t	nbr;
-	char		*str;
-	int			len;
+	unsigned int	nbr;
+	char			*str;
+	int				len;
 
 	if ((fmt_token->length)[0])
 		nbr = length_handle(1, fmt_token->length, vargs);
 	else
-		nbr = va_arg(*vargs, uintmax_t);
+		nbr = va_arg(*vargs, unsigned int);
 	str = ft_itoa_base_unsigned(nbr, 16);
 	if (fmt_token->width)
 		str = padding_handle(fmt_token->flag, fmt_token->width, str);

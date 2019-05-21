@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 05:56:17 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/08 16:31:51 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/15 23:18:53 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ int				c_handle(t_token *fmt_token, va_list *vargs)
 	str[0] = (char)va_arg(*vargs, int);
 	if (fmt_token->width)
 		str = padding_handle(fmt_token->flag, fmt_token->width, str);
-	if (fmt_token->precision)
-		str = padding_handle('0', fmt_token->precision, str);
-	ft_putchar(*str);
-	ft_strdel(&str);
-	return (1);
+	//if (fmt_token->precision)
+	ft_putstr(str);
+	return (ft_strlen(str));
 }
 
 int				s_handle(t_token *fmt_token, va_list *vargs)
@@ -38,12 +36,14 @@ int				s_handle(t_token *fmt_token, va_list *vargs)
 		ft_putstr("(null)");
 		return (6);
 	}
+	if (fmt_token->precision)
+		str = precision_handle(fmt_token, str);
 	if (fmt_token->width)
 		str = padding_handle(fmt_token->flag, fmt_token->width, str);
-	if (fmt_token->precision)
-		str = padding_handle('0', fmt_token->precision, str);
 	ft_putstr(str);
 	len = ft_strlen(str);
+	//if ((fmt_token->width) || (fmt_token->precision))
+	//	ft_strdel(&str);
 	return (len);
 }
 
@@ -61,20 +61,21 @@ int				p_handle(t_token *fmt_token, va_list *vargs)
 		str = padding_handle(fmt_token->flag, fmt_token->width, str);
 	ft_putstr(str);
 	len = ft_strlen(str);
+//	ft_strdel(&str);
 	return (len);
 }
 
 /*
-**	Handles length -> width -> precision
+**	Handles length -> width
 */
 
-intmax_t		di_handle(t_token *fmt_token, va_list *vargs)
+int				di_handle(t_token *fmt_token, va_list *vargs)
 {
 	intmax_t	nbr;
 	char		*str;
 
 	if ((fmt_token->length)[0])
-		nbr = (int)length_handle(-1, fmt_token->length, vargs);
+		nbr = length_handle(-1, fmt_token->length, vargs);
 	else
 		nbr = (int)va_arg(*vargs, intmax_t);
 	str = ft_itoa(nbr);
@@ -82,15 +83,13 @@ intmax_t		di_handle(t_token *fmt_token, va_list *vargs)
 		str = padding_handle(fmt_token->flag, fmt_token->width, str);
 	else if (fmt_token->flag == '+')
 		str = padding_handle('+', (1 + ft_strlen(str)), str);
-	if (fmt_token->precision)
-		str = padding_handle('0', fmt_token->precision, str);
+	//if (fmt_token->precision)
 	ft_putstr(str);
 	nbr = ft_strlen(str);
-	ft_strdel(&str);
 	return (nbr);
 }
 
-uintmax_t		u_handle(t_token *fmt_token, va_list *vargs)
+int				u_handle(t_token *fmt_token, va_list *vargs)
 {
 	uintmax_t	nbr;
 	char		*str;

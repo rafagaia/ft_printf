@@ -6,7 +6,7 @@
 /*   By: rgaia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 17:07:49 by rgaia             #+#    #+#             */
-/*   Updated: 2019/05/06 15:12:44 by rgaia            ###   ########.fr       */
+/*   Updated: 2019/05/09 14:10:18 by rgaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int				token_handler(t_token *fmt_token, va_list *vargs)
 	len = 1;
 	c = fmt_token->conversion;
 	if (c == '%')
-		ft_putstr("%");
+		len = percent_handle(fmt_token);
 	else if ((c == 'c') || (c == 'C'))
 		len = c_handle(fmt_token, vargs);
 	else if ((c == 's') || (c == 'S'))
